@@ -1,74 +1,86 @@
-var About = React.createClass({
-  render: function () {
+import React from 'react';
+import './Weather.css';
+
+class About extends React.Component {
+  render () {
     return (
 			<div className="bottom">A weather app developed by <a href="https://anshuraj.github.io">Anshu Raj</a></div>
     );
-  }
-});
+  } 
+}
 
-var WeatherDisplay = React.createClass({
-  render: function () {
+class WeatherDisplay extends React.Component {
+  render () {
     var {location, temp} = this.props;
 
     return (
       <h4 className="text-center">Weather in {location} is {temp} &deg;C</h4>
     );
   }
-});
+}
 
-var WeatherForm = React.createClass({
-  onFormSubmit: function (e) {
+class WeatherForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {location: ''};
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
+  }
+  
+  onFormSubmit (e) {
     e.preventDefault();
-
-    var location = this.refs.location.value;
-    this.refs.location.value = '';
+    var location = this.state.location;
+    this.setState({location: ''});
 
     if(location.length > 0)
       this.props.onNewLocation(location);
-  },
-  render: function () {
+  }
+  
+  handleChange (e) {
+    this.setState({location: e.target.value});
+  }
+
+  render () {
     return (
       <div>
         <h1 className="text-center">Weather app</h1>
         <form onSubmit={this.onFormSubmit}>
-          <input type='text' placeholder='Enter a location' ref='location'></input>
+          <input type='text' placeholder='Enter a location' value={this.state.location} onChange={this.handleChange}></input>
           <button className="hollow button expanded">Get weather</button>
         </form>
       </div>
     );
   }
-});
+}
 
-var Weather = React.createClass({
-  getDefaultProps: function () {
-    return {
-      isLoading: false
-    };
-  },
-  getInitialState: function () {
-		return {
-			location: this.props.location,
-      temp: this.props.temp
-		};
-	},
-  handleNewLocation: function (location) {
+class Weather extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      location: '',
+      temp: ''
+    }
+  }
+  
+  handleNewLocation (location) {
     const OPEN_WEATHER_MAP_URL = 'https://api.apixu.com/v1/current.json?key=21dc34c5a380401294682025171806';
     var encodedLocation = encodeURIComponent(location);
     var requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
-
+    
     var that = this;
 
-    this.setState({isLoading:true});
-
+    this.setState({isLoading: true});
+  
     fetch(requestUrl).then(function(response){
       return response.json();
     }).then(function(res){
+    
+      if (res.location){
 
-      console.log(res);
-      if(res.location){
-        console.log('asdas');
         that.setState({
-          location: location,
+          location: res.location.name,
           temp: res.current.temp_c,
           isLoading: false
         });
@@ -77,8 +89,8 @@ var Weather = React.createClass({
         alert(res.error.message);
       }
     });
-  },
-  render: function () {
+  }
+  render () {
     var {isLoading, location, temp} = this.state;
     function loading () {
       if(isLoading){
@@ -87,20 +99,23 @@ var Weather = React.createClass({
         return <WeatherDisplay location={location} temp={temp}/>
       }
     }
-
+    
     return (
       <div>
         <div className="small-centered medium-6 large-5 columns card">
-          <WeatherForm onNewLocation={this.handleNewLocation}/>
+        
+          {/* <WeatherForm onNewLocation={this.handleNewLocation.bind(this)}/> */}
+          <WeatherForm onNewLocation={(e) => this.handleNewLocation(e)} />
           {loading()}
         </div>
         <About/>
       </div>
     );
   }
-});
+}
 
-ReactDOM.render(
-  <Weather/>,
-  document.getElementById('app')
-);
+Weather.defaultProps = {
+      isLoading: false
+}
+
+export default Weather;
