@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Weather from './Weather';
-import registerServiceWorker from './registerServiceWorker';
+import App from './App';
+import registerServiceWorker from './sw';
 
-ReactDOM.render(<Weather />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

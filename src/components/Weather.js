@@ -1,5 +1,6 @@
 import React from 'react';
-import './Weather.css';
+import '../css/Weather.css'
+
 
 class About extends React.Component {
   render () {
@@ -90,6 +91,7 @@ class Weather extends React.Component {
       }
     });
   }
+
   render () {
     var {isLoading, location, temp} = this.state;
     function loading () {
@@ -115,7 +117,7 @@ class Weather extends React.Component {
 }
 
 Weather.defaultProps = {
-      isLoading: false
+  isLoading: false
 }
 
 export default Weather;
