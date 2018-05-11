@@ -2,7 +2,7 @@ import React from 'react';
 
 class WeatherDisplay extends React.Component {
   render () {
-    var {
+    let {
       current,
       location
     } = this.props;

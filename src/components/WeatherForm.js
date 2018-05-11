@@ -10,7 +10,7 @@ class WeatherForm extends React.Component {
 
   onFormSubmit = (e) => {
     e.preventDefault();
-    var location = this.state.location;
+    let { location } = this.state;
     this.setState({location: ''});
 
     if(location.length > 0)

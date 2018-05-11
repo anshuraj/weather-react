@@ -4,6 +4,7 @@ import WeatherForm from './WeatherForm';
 import WeatherDisplay from './WeatherDisplay';
 import Spinner from './Spinner';
 import '../css/Weather.css';
+const OPEN_WEATHER_MAP_URL = 'https://api.apixu.com/v1/current.json?key=21dc34c5a380401294682025171806';
 
 class Weather extends React.Component {
   constructor (props) {
@@ -15,11 +16,9 @@ class Weather extends React.Component {
   }
   
   handleNewLocation (location) {
-    const OPEN_WEATHER_MAP_URL = 'https://api.apixu.com/v1/current.json?key=21dc34c5a380401294682025171806';
-    var encodedLocation = encodeURIComponent(location);
-    var requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
-    
-    var that = this;
+    let encodedLocation = encodeURIComponent(location);
+    let requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
+    let that = this;
 
     this.setState({isLoading: true});
   
@@ -56,7 +55,7 @@ class Weather extends React.Component {
   }
 
   render () {
-    var {
+    let {
       current,
       location,
       isLoading,
