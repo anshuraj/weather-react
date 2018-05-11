@@ -2,6 +2,7 @@ import React from 'react';
 import About from './About';
 import WeatherForm from './WeatherForm';
 import WeatherDisplay from './WeatherDisplay';
+import Spinner from './Spinner';
 import '../css/Weather.css';
 
 class Weather extends React.Component {
@@ -47,7 +48,7 @@ class Weather extends React.Component {
     } = this.state;
     function loading () {
       if(isLoading){
-        return <h3>Fetching weather...</h3>
+        return <Spinner />
       } else if(current.hasOwnProperty('temp_c') && location.hasOwnProperty('name')){
         return (
           <WeatherDisplay

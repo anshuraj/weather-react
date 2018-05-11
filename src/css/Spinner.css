@@ -1,0 +1,23 @@
+.spinner {
+  padding: 15px;
+  display: grid;
+  align-items: center;  
+  justify-content: center;
+}
+
+.anim {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  border: 2px solid rgba(189,189,189 ,0.25);
+  border-left-color: #1779ba;
+  border-top-color: #1779ba;
+  border-radius: 50%;
+  animation: rotate 600ms infinite linear;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn)
+  }
+}
