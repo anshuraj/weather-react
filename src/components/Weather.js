@@ -40,6 +40,21 @@ class Weather extends React.Component {
     });
   }
 
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.setState({
+          position: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude
+          }
+        })
+        let { position } = this.state;
+        this.handleNewLocation(position.latitude + ',' + position.longitude)
+      });
+    }
+  }
+
   render () {
     var {
       current,
