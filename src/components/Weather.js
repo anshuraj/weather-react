@@ -14,18 +14,18 @@ class Weather extends React.Component {
       location: {},
     }
   }
-  
+
   handleNewLocation (location) {
     let encodedLocation = encodeURIComponent(location);
     let requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
     let that = this;
 
     this.setState({isLoading: true});
-  
+
     fetch(requestUrl).then(function(response){
       return response.json();
     }).then(function(res){
-    
+
       if (res.location){
         that.setState({
           location: res.location,

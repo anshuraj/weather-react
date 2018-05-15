@@ -19,4 +19,11 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
-  
+
+.temperature {
+  font-size: 42px;
+}
+
+.deg {
+  vertical-align: 20px;
+}
