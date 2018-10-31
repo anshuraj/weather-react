@@ -1,16 +1,14 @@
 import React from 'react';
 
 class WeatherDisplay extends React.Component {
-  render () {
-    let {
+  render() {
+    const {
       current,
       location
     } = this.props;
     return (
       <div>
-        <div>
-          <h4>{location.name}{location.region ? ', ' + location.region : ''}, {location.country}</h4>
-        </div>
+        <h4>{location.name}{location.region ? ', ' + location.region : ''}, {location.country}</h4>
 
         <div className="row">
           {current.condition &&
@@ -34,7 +32,6 @@ class WeatherDisplay extends React.Component {
         <div>Clouds {current.cloud}% </div>
         <div>Wind {current.wind_dir} {current.wind_kph} kmph </div>
         <div>Visibility {current.vis_km} km </div>
-
 
         Last updated on {current.last_updated} <br />
       </div>

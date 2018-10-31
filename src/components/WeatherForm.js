@@ -21,7 +21,7 @@ class WeatherForm extends React.Component {
     this.setState({location: e.target.value});
   }
 
-  render () {
+  render() {
     return (
       <div>
         <h3 className="text-center">Weather</h3>

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+
 import About from './About';
 import WeatherForm from './WeatherForm';
 import WeatherDisplay from './WeatherDisplay';
 import Spinner from './Spinner';
 import '../css/Weather.css';
+
 const OPEN_WEATHER_MAP_URL = 'https://api.apixu.com/v1/current.json?key=21dc34c5a380401294682025171806';
 
 class Weather extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       current: {},
@@ -15,28 +17,37 @@ class Weather extends React.Component {
     }
   }
 
-  handleNewLocation (location) {
-    let encodedLocation = encodeURIComponent(location);
-    let requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
+  handleNewLocation = location => {
+    const encodedLocation = encodeURIComponent(location);
+    const requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
     let that = this;
 
     this.setState({isLoading: true});
 
-    fetch(requestUrl).then(function(response){
-      return response.json();
-    }).then(function(res){
-
-      if (res.location){
-        that.setState({
-          location: res.location,
-          current: res.current,
-          isLoading: false
-        });
-      } else if(res.error){
-        that.setState({isLoading:false, temp: '', location: ''});
-        alert(res.error.message);
-      }
-    });
+    fetch(requestUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then(response => {
+        if (response.location) {
+          that.setState({
+            location: response.location,
+            current: response.current,
+            isLoading: false
+          });
+        } else if (response.error) {
+          that.setState({
+            isLoading: false,
+            temp: '',
+            location: ''
+          });
+          alert(response.error.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -54,16 +65,17 @@ class Weather extends React.Component {
     }
   }
 
-  render () {
-    let {
+  render() {
+    const {
       current,
       location,
       isLoading,
     } = this.state;
-    function loading () {
-      if(isLoading){
+
+    const loading = () => {
+      if (isLoading) {
         return <Spinner />
-      } else if(current.hasOwnProperty('temp_c') && location.hasOwnProperty('name')){
+      } else if (current.hasOwnProperty('temp_c') && location.hasOwnProperty('name')) {
         return (
           <WeatherDisplay
             location={location}
@@ -71,15 +83,15 @@ class Weather extends React.Component {
         );
       }
     }
-    
+
     return (
-      <div>
+      <Fragment>
         <div className="small-centered medium-6 large-5 columns card">
           <WeatherForm onNewLocation={(e) => this.handleNewLocation(e)} />
           {loading()}
         </div>
         <About/>
-      </div>
+      </Fragment>
     );
   }
 }

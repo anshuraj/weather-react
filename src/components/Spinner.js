@@ -6,7 +6,7 @@ import '../css/Spinner.css';
  * Renders a loading spinner
  */
 class Spinner extends Component {
-  render () {
+  render() {
     return (
       <div className="spinner">
         <div className="anim">
