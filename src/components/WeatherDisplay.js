@@ -6,34 +6,35 @@ class WeatherDisplay extends React.Component {
       current,
       location
     } = this.props;
+    console.log(current.weather_icons.map(i => i));
     return (
       <div>
         <h4>{location.name}{location.region ? ', ' + location.region : ''}, {location.country}</h4>
 
         <div className="row">
-          {current.condition &&
+          {current &&
             <div className="small-6 columns">
               <div>
-                <img src={current.condition.icon} alt="cloudiness" /> <br />
+                {current.weather_icons.map(i => <img src={i} />)}
               </div>
-              <div>{current.condition.text}</div>
+              {current.weather_descriptions.map(w => <div>{w}</div>)}
             </div>
           }
 
           <div className="small-6 columns">
-            <div><span className="temperature">{current.temp_c}</span> <span className="deg">&deg;C</span></div>
-            <div>Feels like {current.feelslike_c} &deg;C</div>
+            <div><span className="temperature">{current.temperature}</span> <span className="deg">&deg;C</span></div>
+            <div>Feels like {current.feelslike} &deg;C</div>
           </div>
         </div>
         <br />
 
-        <div>Precipitation {current.precip_mm} mm </div>
+        <div>Precipitation {current.precip} mm </div>
         <div>Humidity {current.humidity}% </div>
-        <div>Clouds {current.cloud}% </div>
-        <div>Wind {current.wind_dir} {current.wind_kph} kmph </div>
-        <div>Visibility {current.vis_km} km </div>
+        <div>Clouds {current.cloudcover}% </div>
+        <div>Wind {current.wind_dir} {current.wind_speed} kmph </div>
+        <div>Visibility {current.visibility} km </div>
 
-        Last updated on {current.last_updated} <br />
+        Last updated on {current.observation_time} <br />
       </div>
     );
   }

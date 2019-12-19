@@ -6,7 +6,7 @@ import WeatherDisplay from './WeatherDisplay';
 import Spinner from './Spinner';
 import '../css/Weather.css';
 
-const OPEN_WEATHER_MAP_URL = 'https://api.apixu.com/v1/current.json?key=21dc34c5a380401294682025171806';
+const OPEN_WEATHER_MAP_URL = 'http://api.weatherstack.com/current?access_key=733bd20110d64d7502419d9e3356db65';
 
 class Weather extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class Weather extends React.Component {
 
   handleNewLocation = location => {
     const encodedLocation = encodeURIComponent(location);
-    const requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${encodedLocation}`;
+    const requestUrl = `${OPEN_WEATHER_MAP_URL}&query=${encodedLocation}`;
     let that = this;
 
     this.setState({isLoading: true});
@@ -75,7 +75,7 @@ class Weather extends React.Component {
     const loading = () => {
       if (isLoading) {
         return <Spinner />
-      } else if (current.hasOwnProperty('temp_c') && location.hasOwnProperty('name')) {
+      } else if (current.hasOwnProperty('temperature') && location.hasOwnProperty('name')) {
         return (
           <WeatherDisplay
             location={location}
