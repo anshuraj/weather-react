@@ -7,17 +7,17 @@ import Spinner from './Spinner';
 import '../css/Weather.css';
 
 const WEATHER_MAP_URL =
-  'http://api.weatherstack.com/current?access_key=733bd20110d64d7502419d9e3356db65';
+  'https://api.openweathermap.org/data/2.5/weather?appid=346174a5d0c90da6a254f1ca2fd936aa&units=metric';
 
 function Weather() {
-  const [current, setCurrent] = useState({});
-  const [location, setLocation] = useState({});
+  const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleNewLocation = (location) => {
-    const encodedLocation = encodeURIComponent(location);
-    const requestUrl = `${WEATHER_MAP_URL}&query=${encodedLocation}`;
-
+  const handleNewLocation = ({ city, lat, lon }) => {
+    const requestUrl = `${WEATHER_MAP_URL}${city ? `&q=${city}` : ''}${
+      lat && lon ? `&lat=${lat}&lon=${lon}` : ''
+    }`;
+    console.log(city);
     setIsLoading(true);
 
     fetch(requestUrl)
@@ -28,8 +28,7 @@ function Weather() {
         return response.json();
       })
       .then((response) => {
-        setLocation(response.location || {});
-        setCurrent(response.current || {});
+        setData(response || {});
         setIsLoading(false);
         if (response.error) {
           alert(response.error.message);
@@ -41,7 +40,10 @@ function Weather() {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
-        handleNewLocation(pos.coords.latitude + ',' + pos.coords.longitude);
+        handleNewLocation({
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+        });
       });
     }
   }, []);
@@ -49,11 +51,8 @@ function Weather() {
   const loading = () => {
     if (isLoading) {
       return <Spinner />;
-    } else if (
-      current.hasOwnProperty('temperature') &&
-      location.hasOwnProperty('name')
-    ) {
-      return <WeatherDisplay location={location} current={current} />;
+    } else if (data.hasOwnProperty('main')) {
+      return <WeatherDisplay data={data} />;
     }
   };
 

@@ -8,7 +8,7 @@ function WeatherForm({ onNewLocation }) {
     e.preventDefault();
     setLocation('');
 
-    if (location.length > 0) onNewLocation(location);
+    if (location.length > 0) onNewLocation({ city: location });
   };
 
   const handleChange = (e) => {
