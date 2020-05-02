@@ -1,42 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-class WeatherForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: ''
-    };
-  }
+function WeatherForm({ onNewLocation }) {
+  const [location, setLocation] = useState('');
 
-  onFormSubmit = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
-    let { location } = this.state;
-    this.setState({location: ''});
+    setLocation('');
 
-    if(location.length > 0)
-      this.props.onNewLocation(location);
-  }
-  
-  handleChange = (e) => {
-    this.setState({location: e.target.value});
-  }
+    if (location.length > 0) onNewLocation(location);
+  };
 
-  render() {
-    return (
-      <div>
-        <h3 className="text-center">Weather</h3>
-        <form onSubmit={this.onFormSubmit}>
-          <input
-            type='text'
-            value={this.state.location}
-            onChange={this.handleChange}
-            placeholder='Enter a location'>
-          </input>
-          <button className="hollow button expanded">Get weather</button>
-        </form>
-      </div>
-    );
-  }
+  const handleChange = (e) => {
+    const location = e.target.value;
+    setLocation(location);
+  };
+  return (
+    <div>
+      <h3 className="text-center">Weather</h3>
+      <form onSubmit={onFormSubmit}>
+        <input
+          type="text"
+          value={location}
+          onChange={handleChange}
+          placeholder="Enter a location"
+        />
+        <button className="hollow button expanded">Get weather</button>
+      </form>
+    </div>
+  );
 }
+
+WeatherForm.propTypes = {
+  onNewLocation: PropTypes.func.isRequired,
+};
 
 export default WeatherForm;
