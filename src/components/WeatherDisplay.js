@@ -12,7 +12,7 @@ function WeatherDisplay({ current, location }) {
           <div className="small-6 columns">
             <div>
               {current.weather_icons.map((i) => (
-                <img key={i} src={i} />
+                <img key={i} src={i} alt="icon" />
               ))}
             </div>
             {current.weather_descriptions.map((w) => (
