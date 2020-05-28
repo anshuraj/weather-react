@@ -23,7 +23,7 @@ function WeatherForm({ onNewLocation }) {
           type="text"
           value={location}
           onChange={handleChange}
-          placeholder="Enter a location"
+          placeholder="Find a city.    Ex: Bangalore"
         />
         <button className="hollow button expanded">Get weather</button>
       </form>

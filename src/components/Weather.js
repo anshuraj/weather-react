@@ -11,30 +11,31 @@ const WEATHER_MAP_URL =
 
 function Weather() {
   const [data, setData] = useState({});
+  const [showForm, setShowForm] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleNewLocation = ({ city, lat, lon }) => {
     const requestUrl = `${WEATHER_MAP_URL}${city ? `&q=${city}` : ''}${
       lat && lon ? `&lat=${lat}&lon=${lon}` : ''
     }`;
-    console.log(city);
     setIsLoading(true);
 
-    fetch(requestUrl)
+    fetch('/weather-react/test.json')
+      .then((res) => res.json())
       .then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
+        if (response.cod !== 200) {
+          alert(response.message);
+        } else {
+          setData(response || {});
+          setShowForm(false);
         }
-        return response.json();
       })
-      .then((response) => {
-        setData(response || {});
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
         setIsLoading(false);
-        if (response.error) {
-          alert(response.error.message);
-        }
-      })
-      .catch((err) => console.error(err));
+      });
   };
 
   useEffect(() => {
@@ -52,17 +53,18 @@ function Weather() {
     if (isLoading) {
       return <Spinner />;
     } else if (data.hasOwnProperty('main')) {
-      return <WeatherDisplay data={data} />;
+      return (
+        <WeatherDisplay data={data} changeCity={() => setShowForm(true)} />
+      );
     }
   };
 
   return (
     <>
-      <div className="small-centered medium-6 large-5 columns card">
-        <WeatherForm onNewLocation={handleNewLocation} />
-        {loading()}
+      <div className="small-centered medium-6 large-5 columns">
+        {showForm && <WeatherForm onNewLocation={handleNewLocation} />}
+        {!showForm && loading()}
       </div>
-      <About />
     </>
   );
 }
